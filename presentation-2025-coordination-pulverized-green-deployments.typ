@@ -76,6 +76,7 @@
 
 #show bibliography: set text(size: 0.75em)
 #show footnote.entry: set text(size: 0.75em)
+#show quote: set text(size: 1.25em, style: "italic")
 
 // #set heading(numbering: numbly("{1}.", default: "1.1"))
 
@@ -85,94 +86,31 @@
 
 // #components.adaptive-columns(outline(title: none, indent: 1em))
 
-= Animation
+== DePPS
 
-== Simple Animation
+#quote[How can we make collective systems deployments greener while maintaining performance?]
 
-#pdfpc.speaker-note("This is a note that only the speaker will see.")
+=== Problem statement
 
-// #set text(font: "Fira Sans", weight: 350, size: 20pt)
-// #show math.equation: set text(font: "Fira Math")
-// #set strong(delta: 200)
-// #set par(justify: true)
+- IoT ecosystems and robot swarms need *efficient deployment strategies*
+- Current approaches *lack* automated deployment generation
+- Need to balance *performance* with environmental *sustainability*
 
-// #set quote(block: true)
-// #show quote: set align(left)
-// #show quote: set pad(x: 2em, y: -0.8em)
+#v(2em)
+#components.side-by-side(columns: (1fr, 3fr))[
+  #align(center)[
+    #text(
+      size: 2em,
+      "DePPS",
+      font: "Fira Sans",
+      weight: "bold",
+      fill: rgb("#4CAF50"),
+    )
+  ]
+][
+  _#underline[De]clarative deployment #underline[P]lanning for #underline[P]ulverised #underline[S]ystems_
+]
 
-// #set raw(tab-size: 4)
-// #show raw.where(block: true): block.with(
-//   fill: luma(240),
-//   inset: 1em,
-//   radius: 0.7em,
-//   width: 100%,
-// )
-
-// #show bibliography: set text(size: 0.8em)
-// #show footnote.entry: it => {
-//   block(inset: (x: 2em, y: 0.1em))[#text(size: 0.75em)[#it.note.body]]
-// }
-
-// #let fcite(clabel) = {
-//   footnote(cite(form: "full", label(clabel)))
-// }
-
-// #let author = block(inset: 0.1em)[
-//   #table(inset: 0.5em, stroke: none, columns: (auto, 4fr),  align: (left, left),
-//     [#alert[*Author 1*]], [`author1@mail.com`],
-//     [Author 2], [`author2@mail.com`],
-//     [Author 3], [`author3@mail.com`],
-//   )
-//   #place(right, dy:-1.5em)[
-//     #figure(image("images/disi.svg", width:40%))
-//   ]
-// ]
-
-// #title-slide(
-//   title: "Slide Title",
-//   subtitle: "Subtitle",
-//   author: author,
-//   // date: datetime.today().display("[day] [month repr:long] [year]"),
-// )
-
-// #new-section-slide("Slide section 1")
-
-== Slide
-*Bold* and _italic_ text.
-
-This is a citation #cite(label("DBLP:journals/fgcs/FarabegoliPCV24")).
-This another citation #cite(label("DBLP:journals/iot/FarabegoliPCV24"))
-
-#alert[This is an alert.]
-
-== Code slide
-
-```kotlin
-fun main() {
-    println("Hello, world!")
-    for (i in 0..9) {
-        println(i)
-    }
-    println("Goodbye, world!")
-}
-```
-
-== Title and subtitle slide
-
-=== This is a subtitle
-
-#lorem(24)
-
-=== This is a subtitle
-
-#lorem(34)
-
-== FontAwesome icons
-
-=== Icon in a title #fa-java()
-
-#fa-icon("github") -- Github icon \
-#fa-icon("github", fill: blue) -- Github icon blue fill
 
 // #slide[
 //   #bibliography("bibliography.bib")
