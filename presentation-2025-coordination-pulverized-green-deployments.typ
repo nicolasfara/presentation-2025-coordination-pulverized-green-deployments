@@ -45,17 +45,20 @@
     show-bibliography-as-footnote: bibliography(title: none, "bibliography.bib"),
   ),
   config-info(
-    title: [Presentation Title],
-    subtitle: [Subtitle],
+    title: [Declarative Deployment Planning for Green Pulverised Collective Computational Systems],
+    // subtitle: [Subtitle],
     author: author_list(
       (
+        ("Antonio Brogi", "antonio.brogi@unipi.it"),
+        ("Roberto Casadei", "roby.casadei@unibo.it"),
         (first_author("Nicolas Farabegoli"), "nicolas.farabegoli@unibo.it"),
-        ("Foo Bar", "foo@bar.com"),
+        ("Stefano Forti", "stefano.forti@unipi.it"),
+        ("Mirko Viroli", "mirko.viroli@unibo.it"),
       )
     ),
     date: datetime.today().display("[day] [month repr:long] [year]"),
-    institution: [University of Bologna],
-    logo: align(right)[#image("images/disi.svg", width: 55%)],
+    institution: [University of Bologna & University of Pisa],
+    //logo: align(right)[#image("images/disi.svg", width: 55%)],
   ),
 )
 
