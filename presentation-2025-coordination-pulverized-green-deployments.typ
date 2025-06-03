@@ -190,7 +190,7 @@
 
 === Knowledge Representation
 
-A *device* is identified by a UID `DigDev`, the UID of its _knowledge_ component `k` and a list of UIDs of its _sense_ `S`, _act_ `A`, _behavior_ `B`, and _communication_ `C` components.
+A *digital device* is identified by a UID `DigDev`, the UID of its _knowledge_ component `k` and a list of UIDs of its _sense_ `S`, _act_ `A`, _behavior_ `B`, and _communication_ `C` components.
 
 ```prolog
 digitalDevice(DigDev, K, [S, A, B, C]).
@@ -206,23 +206,24 @@ behaviour(B, BHWReqs, BMaxLatToK).
 communication(C, CHWReqs, CMaxLatToK).
 ```
 
-*Physical devices* are denoted by their UID `N`, available and total hardware `FreeHW` and `TotHW`, a list of `Sensors` and `Actuators` they can use.
+*Physical devices* (PD) are denoted by their UID `N`, available and total hardware `FreeHW` and `TotHW`, a list of `Sensors` and `Actuators` they can use.
 
 ```prolog
 physicalDevice(N, FreeHW, TotHW, Sensors, Actuators).
 ```
 
-Each physical device has a #bold[PUE] (Power Usage Effectiveness) associated,
-and an #bold[energy source mix].
+Each PD has #bold[PUE] (Power Usage Effectiveness) associated, and an #bold[energy source mix].
 
 ```prolog
 energySourceMix(N, [(P1,EnergySource1), ..., (PK,EnergySourceK)]).
 pue(N, PUE).
 ```
 
+Each PD is #bold[connected] to other physical devices though a *link* denoted by its available `Latency` and `Bandwidth`.
 
-// #figure(image("images/pulverization.png"))
-
+```prolog
+link(N1, N2, Latency, Bandwidth).
+```
 
 // #slide[
 //   #bibliography("bibliography.bib")
