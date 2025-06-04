@@ -4,6 +4,8 @@
 #import "@preview/ctheorems:1.1.3": *
 #import "@preview/numbly:0.1.0": numbly
 #import "utils.typ": *
+#import "@preview/cetz:0.3.4"
+#import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
 
 // Pdfpc configuration
 // typst query --root . ./example.typ --field value --one "<pdfpc-file>" > ./example.pdfpc
@@ -224,6 +226,72 @@ Each PD is #bold[connected] to other physical devices though a *link* denoted by
 ```prolog
 link(N1, N2, Latency, Bandwidth).
 ```
+
+== Placement strategy
+
++ Select a node $mono("NK") in mono("Nodes")$ as placement target for $mono("K")$ component
++ The `placeKnowledge/4` predicate gets the HW requirements of $mono("K")$ and checks the `HWCaps` of $mono("NK")$ can support the new allocation, i.e., $mono("used(NK, HWUsed)" in I)$
++ The `placeComponents/6` assigns the $mono("A, S, B, C")$ components ensuring they meet the latency constrain towards the _knowledge_
+  + Sensor and Actuators are placed onto nodes $mono("N") in mono("Nodes")$
+  + Predicate `latencyOk` checks that the end-to-end latency between $mono("NK")$ and $mono("N")$ is $< mono("LatToK")$
+  + Predicate `hwOk/5` check the current placement leave enought free HW on $mono("N")$
+  + `placeComponents/6` recursively places the remaining components
++ A complete eligible placement is found when the list of components to be placed is empty `[]`
+
+== Environment footprint assesment
+
++ `footprint/4` with a `Placement`, estimates `Energy` and `Carbon`.
+  + Extract nodes from `Placement`, remove duplicates with `sort/2`.
++ Use `hardwareFootprint/5` to process each node:
+  + Call `nodeEnergy/4`:
+    - Get `FreeHW`, `TotHW`, and current allocation.
+    - Compute load and energy before/after placement.
+    - Energy = `(NewE - OldE) * PUE`.
+  + Call `nodeEmissions/3`:
+    - For each energy source: get carbon intensity and proportion.
+    - Compute weighted average, multiply by energy to get emissions.
++ Accumulate per-node energy and emissions.
++ Return total `Energy` and `Carbon`.
+
+== Placing multiple devices
+
+The considered problem has the following #bold[characteristics]:
+- Incurs in *exp-time* (worst-case) complexity #fa-warning()
+- Is proved to be *NP-hard* #cite(label("7919155")) #fa-warning()
+
+=== Solution
+
+We devised a *heuristic-strategy* capable of placing #underline[multiple] devices by exploring candidate nodes from those with #bold[lower carbon intensity] to those with #bold[higher carbon intensity] #footnote("While it practically reduces search times, it remains worst-case exp-time.").
+
+The `place/4` is extended to:
+- sort the nodes by their *carbon intensity* and *energy consumption*
+- impose a *threshold* on the carbon intensisty and energy consumption (single node)
+
+= Evaluation
+
+#slide[
+  The proposed approach has been applied to #bold[different network topologies],
+  and a #bold[variable number of devices]
+
+  #components.side-by-side(columns: (2fr, 1fr))[
+  We can (re)generate #bold[deployment plans] featuring:
+  - improved *carbon footprint*
+  - reduced *energy consumption*
+  - reduced overall *latency*
+
+  All the experiments are #underline[released as open-source] on GitHub #fa-github() with a permissive license, and permanently archived on #bold[Zenodo] #cite(label("nicolas_farabegoli_2025_14927541"))
+  ][
+    #figure((image("images/github-experiments-qr.svg", width: 70%)))
+  ]
+]
+
+== Setup
+
+- Synthetic smart city/swarm system
+- Variable number of devices (50-100)
+- Dynamic energy mix (sine wave pattern)
+- Two scenarios: device-only (baseline) vs. placer
+
 
 // #slide[
 //   #bibliography("bibliography.bib")
