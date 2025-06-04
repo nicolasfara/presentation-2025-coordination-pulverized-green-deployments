@@ -287,10 +287,38 @@ The `place/4` is extended to:
 
 == Setup
 
-- Synthetic smart city/swarm system
-- Variable number of devices (50-100)
-- Dynamic energy mix (sine wave pattern)
-- Two scenarios: device-only (baseline) vs. placer
+We model a #underline[syntetic system] acting as a proxy for a *smart city event* or a *swarm* with devices moving around.
+
+=== Experimental setup
+#components.side-by-side[
+#table(
+  columns: 2,
+  align: (left, left),
+  inset: 0.4em,
+  table.header(
+    [#bold[Parameter]], [#bold[Value]]
+  ),
+    [Devices], [50, 75, 100],
+    [Energy mix], [_sine wave_ pattern],
+    [Topology], [_short-range_ and _cloud_],
+    [Time], [720 steps #footnote("We considered 1 step = 1 minute")],
+    [Reconf. time], [30 steps],
+    [Movement], [Brownian motion]
+)
+][
+  #show figure.caption: set text(size: 0.75em, style: "italic")
+  #show figure.caption: it => [ #it.body]
+  #figure(
+    rect(
+      image("images/experimental-setup-example.png", width: 80%),
+      stroke: 0.1em + rgb("#eb811b"),
+      radius: 0.3em,
+      inset: 0.5em,
+    ),
+    caption: "Example of experimental setup with 100 devices",
+  )
+]
+
 
 
 // #slide[
