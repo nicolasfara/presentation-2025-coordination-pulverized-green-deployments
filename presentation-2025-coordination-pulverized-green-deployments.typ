@@ -303,7 +303,8 @@ We model a #underline[syntetic system] acting as a proxy for a *smart city event
     [Topology], [_short-range_ and _cloud_],
     [Time], [720 steps #footnote("We considered 1 step = 1 minute")],
     [Reconf. time], [30 steps],
-    [Movement], [Brownian motion]
+    [Movement], [Brownian motion],
+    [Seed], [0-9]
 )
 ][
   #show figure.caption: set text(size: 0.75em, style: "italic")
@@ -318,6 +319,76 @@ We model a #underline[syntetic system] acting as a proxy for a *smart city event
     caption: "Example of experimental setup with 100 devices",
   )
 ]
+
+#pagebreak()
+
+We evaluate two main scenarios:
+
+#components.side-by-side[
+  === Device Only
+
+  Scenario acting as a *baseline*
+
+  - Fully _peer-to-peer_ network
+  - All the 5 _components_ to the corresponding physical device 
+][
+  === Placer
+
+  Scenario invoving the *placer*
+
+  - Use of the _cloud_ for offloading
+  - Every 30 step, a new *deployment* is computed by the placed
+]
+
+Each device has an #bold[energy source mix] following a jittered sine wave as a proxy for a variable energy mix distribution.
+
+== Results -- Energy & Carbon Emissions
+
+Compared to the #bold[baseline] scenario:
+
+- The proposed appraoch achieved *greener* deployments
+  - 3 times *less* energy consumption #fa-check-circle()
+  - *Less* carbon emissions #fa-check-circle()
+
+Increasing the number of devices, the #bold[baseline] proportionally increase _energy_ and _carbon_ emission, reaching $12 text("kWh")$ with 100 nodes.
+
+The #bold[placer] consume less than $2 text("kWh")$ with 50 nodes, increasing up to $3.5 text("kWh")$ with 100 nodes.
+
+#figure(image("images/Carbon_vs_Energy_perNodes_perStrategy.svg"))
+
+== Results -- Latency
+
+We considered *two* type of _lantecies_:
+
+- #bold[Inter-device latency]: latency experienced by the #math.mono("C") component to communicate with neighboring digital devices
+- #bold[Intra-component latency]: latency experienced by a single _digital device_ to reach its five components (may offloaded to other physical devices)
+
+Compared to the #bold[baseline] scenario:
+- The baseline achieve near-zero intra-component lantency
+- The inter-device latency is proportional to the distance between devices
+- With pulverized deployment, *higher* intra-component latency expected
+- But inter-device latency is expected to be *similar* or even *lower*
+
+The placer achieve *locally-preserving placements* keeping under control intra-component latencies. 
+
+#figure(image("images/IntraLatency_vs_InterLatency_perNodes_perStrategy.svg"))
+
+= Conclusions
+
+== Concluding Remarks
+
+- We proposed *DePPS* a prolog-based planner integrated in Alchemist to evaluate deployment for _pulverized systems_
+- We evaluate _DePPS_ with different simulates scenarios showing its ability to provide *greener* deployments with *low energy* consumption
+- We provide a *reusable toolchain* for reproducing the experiments, and possibily assessing different kind of deployments
+
+== Future work
+
+- #bold[Continuous reasoning]: consider only *changes in the network* instead of re-applying the reasoner
+- #bold[Decentralized placement]: current approach assumes a _centralized reasoner_ considering an up-to-date infrastructure view. An inprovement could consider multiple reasoners to focus on a *small part of the system*.
+- #bold[End-to-end simulatio models]: consider (re-)configuration overhead and convergence time
+- #bold[Generalization of rules]: The current placer provides a deployment plan as output. An alternative is to generate local deployment rules, instructing individual devices.
+
+#focus-slide[*Thank you*]
 
 
 
