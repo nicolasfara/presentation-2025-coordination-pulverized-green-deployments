@@ -90,7 +90,7 @@
 
 == DePPS -- _Declarative Deployment Planning for Pulverised Systems_
 
-#quote[How to get a *good deployment plan* for pulverised systems?]
+#quote[How to get a *good deployment plan* for (pulverised) collective computational systems?]
 
 #v(1em)
 
@@ -176,7 +176,7 @@
 
   ```prolog
   ?- nice(X).
-  X = barbara ;
+  X = barbara;
   ```
 ][
   #figure(image("images/file-type-prolog.svg", width: 60%))
@@ -190,9 +190,15 @@
 
 == Prolog-based Planner
 
-=== Knowledge Representation
+A *digital device* is identified by a UID `DigDev`,
+the UID of its _knowledge_ component `K` and a list of UIDs of its _sense_ `S`,
+_act_ `A`, _behavior_ `B`, and _communication_ `C` components.
 
-A *digital device* is identified by a UID `DigDev`, the UID of its _knowledge_ component `k` and a list of UIDs of its _sense_ `S`, _act_ `A`, _behavior_ `B`, and _communication_ `C` components.
+#figure(image("images/digital-device.svg"))
+
+#pagebreak()
+
+=== Knowledge Representation
 
 ```prolog
 digitalDevice(DigDev, K, [S, A, B, C]).
@@ -203,10 +209,15 @@ The components are associated with HW requirement `*HWReqs` and the maximul toll
 ```prolog
 knowledge(K, HWReqs).
 sense(S, SHWReqs, SMaxLatToK).
-act(A, AHWReqs, SMaxLatToK).
+act(A, AHWReqs, AMaxLatToK).
 behaviour(B, BHWReqs, BMaxLatToK).
 communication(C, CHWReqs, CMaxLatToK).
 ```
+#pagebreak()
+
+#figure(image("images/physical-device.svg"))
+
+#pagebreak()
 
 *Physical devices* (PD) are denoted by their UID `N`, available and total hardware `FreeHW` and `TotHW`, a list of `Sensors` and `Actuators` they can use.
 
