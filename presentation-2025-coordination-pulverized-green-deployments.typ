@@ -215,11 +215,11 @@ communication(C, CHWReqs, CMaxLatToK).
 ```
 #pagebreak()
 
+*Physical devices* (PD) are denoted by their UID `N`, available and total hardware `FreeHW` and `TotHW`, a list of `Sensors` and `Actuators` they can use.
+
 #figure(image("images/physical-device.svg"))
 
 #pagebreak()
-
-*Physical devices* (PD) are denoted by their UID `N`, available and total hardware `FreeHW` and `TotHW`, a list of `Sensors` and `Actuators` they can use.
 
 ```prolog
 physicalDevice(N, FreeHW, TotHW, Sensors, Actuators).
