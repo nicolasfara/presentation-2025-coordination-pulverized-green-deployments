@@ -384,12 +384,14 @@ We considered *two* type of _lantecies_:
 // - #bold[Intra-component latency]: latency experienced by a single _digital device_ to reach its five components (may offloaded to other physical devices)
 
 Compared to the #bold[baseline] scenario:
-- The baseline achieve near-zero intra-component lantency
-- The inter-device latency is proportional to the distance between devices
-- With pulverized deployment, *higher* intra-component latency expected
-- But inter-device latency is expected to be *similar* or even *lower*
+- The #bold[placer] achieved *good* result in terms of latency:
+  - Slight #text(fill: red, weight: "bold")[increase] in the _intra-components_ latency --- but *under control* #fa-tilde(solid: true, size: 1.5em)
+  - *Similar* (or even _less_) _intra-device_ latency  #fa-check-circle()
+// - The inter-device latency is proportional to the distance between devices
+// - With pulverized deployment, *higher* intra-component latency expected
+// - But inter-device latency is expected to be *similar* or even *lower*
 
-The placer achieve *locally-preserving placements* keeping under control intra-component latencies. 
+The placer achieve *locally-preserving placements* keeping under control _intra-component_ latencies. 
 
 #figure(image("images/IntraLatency_vs_InterLatency_perNodes_perStrategy.svg"))
 
