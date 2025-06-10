@@ -371,8 +371,17 @@ The #bold[placer] consume less than $2 text("kWh")$ with 50 nodes, increasing up
 
 We considered *two* type of _lantecies_:
 
-- #bold[Inter-device latency]: latency experienced by the #math.mono("C") component to communicate with neighboring digital devices
-- #bold[Intra-component latency]: latency experienced by a single _digital device_ to reach its five components (may offloaded to other physical devices)
+#components.side-by-side[
+  === Intra-component latency
+  #figure(image("images/intra-latency.svg", width: 80%))
+
+][
+  === Inter-device latency
+  #figure(image("images/inter-latency.svg", width: 80%))
+]
+
+// - #bold[Inter-device latency]: latency experienced by the #math.mono("C") component to communicate with neighboring digital devices
+// - #bold[Intra-component latency]: latency experienced by a single _digital device_ to reach its five components (may offloaded to other physical devices)
 
 Compared to the #bold[baseline] scenario:
 - The baseline achieve near-zero intra-component lantency

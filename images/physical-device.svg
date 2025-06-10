@@ -23,11 +23,11 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
-     inkscape:zoom="1.6340708"
-     inkscape:cx="415.22069"
-     inkscape:cy="220.61468"
+     inkscape:zoom="3.1724199"
+     inkscape:cx="423.33614"
+     inkscape:cy="233.41803"
      inkscape:window-width="1920"
-     inkscape:window-height="1128"
+     inkscape:window-height="1052"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -1063,47 +1063,15 @@
        sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.23333px;line-height:0;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#23373b;fill-opacity:1;stroke:none;stroke-width:0.2;stroke-linecap:butt;stroke-dasharray:none;stroke-dashoffset:7.55906;stroke-opacity:1"
-       x="101.4155"
-       y="56.481167"
-       id="text20"><tspan
-         sodipodi:role="line"
-         id="tspan20"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.52778px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.2"
-         x="101.4155"
-         y="56.481167">Latency</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.23333px;line-height:0;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#23373b;fill-opacity:1;stroke:none;stroke-width:0.2;stroke-linecap:butt;stroke-dasharray:none;stroke-dashoffset:7.55906;stroke-opacity:1"
-       x="148.47151"
-       y="60.53989"
-       id="text20-4"><tspan
-         sodipodi:role="line"
-         id="tspan20-2"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.52778px;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.2"
-         x="148.47151"
-         y="60.53989">Bandwidth</tspan></text>
-    <path
-       style="fill:none;fill-opacity:1;stroke:#23373b;stroke-width:0.2;stroke-linecap:butt;stroke-dasharray:none;stroke-dashoffset:7.55906;stroke-opacity:1;marker-start:url(#Dot-7-7)"
-       d="m 153.21742,64.887784 c 4.19544,0 4.14782,-1.879802 4.68603,-3.888436"
-       id="path21"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="fill:none;fill-opacity:1;stroke:#23373b;stroke-width:0.2;stroke-linecap:butt;stroke-dasharray:none;stroke-dashoffset:7.55906;stroke-opacity:1;marker-end:url(#Dot-7-7)"
-       d="m 108.89792,53.421353 c 0,-2.386859 4.05966,-2.670495 7.86987,-3.691437"
-       id="path22"
-       sodipodi:nodetypes="cc" />
-    <text
-       xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.23333px;line-height:0;font-family:'JetBrains Mono';-inkscape-font-specification:'JetBrains Mono, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:none;fill-opacity:1;stroke:#23373b;stroke-width:0.2;stroke-linecap:butt;stroke-dasharray:none;stroke-dashoffset:7.55906;stroke-opacity:1"
-       x="121.18514"
-       y="72.925102"
+       x="96.176208"
+       y="73.545929"
        id="text22"><tspan
          sodipodi:role="line"
          id="tspan22"
          style="fill:#23373b;fill-opacity:1;stroke:none;stroke-width:0.2"
-         x="121.18514"
-         y="72.925102">Link</tspan></text>
+         x="96.176208"
+         y="73.545929">link(latency, bandwidth)</tspan></text>
     <path
        style="fill:none;fill-opacity:1;stroke:#23373b;stroke-width:0.2;stroke-linecap:butt;stroke-dasharray:none;stroke-dashoffset:7.55906;stroke-opacity:1;marker-end:url(#Dot-7-7)"
        d="m 126.45987,68.391013 c 0,-5.513928 2.93628,-5.025815 7.08646,-9.175999"
