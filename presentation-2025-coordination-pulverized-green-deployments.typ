@@ -433,7 +433,7 @@ Compared to the #bold[baseline] scenario:
 - The #bold[placer] achieved *good* result in terms of latency:
   - Slight #text(fill: red, weight: "bold")[increase] in the _intra-components_ latency --- but *under control* #fa-tilde(solid: true, size: 1.5em)
   - *Similar* (or even _less_) _intra-device_ latency  #fa-check-circle()
-  - Overall the latency is below $50$ms -- suitable for quasi real-time applications
+  - Overall the latency is below $50$ms -- suitable for quasi real-time applications #fa-check-circle()
 // - The inter-device latency is proportional to the distance between devices
 // - With pulverized deployment, *higher* intra-component latency expected
 // - But inter-device latency is expected to be *similar* or even *lower*
