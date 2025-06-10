@@ -6,6 +6,12 @@
 #import "utils.typ": *
 #import "@preview/cetz:0.3.4"
 #import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
+#import "@preview/codly:1.3.0": *
+#import "@preview/codly-languages:0.1.1": *
+#show: codly-init.with(
+
+)
+#codly(languages: codly-languages)
 
 // Pdfpc configuration
 // typst query --root . ./example.typ --field value --one "<pdfpc-file>" > ./example.pdfpc
@@ -67,18 +73,20 @@
 #set text(font: "Fira Sans", weight: "light", size: 20pt)
 #show math.equation: set text(font: "Fira Math")
 
-#set raw(tab-size: 4)
-#show raw: set text(size: 1em)
-#show raw.where(block: true): block.with(
-  fill: luma(240),
-  inset: (x: 1em, y: 1em),
-  radius: 0.7em,
-  width: 100%,
-)
+// #set raw(tab-size: 4)
+// #show raw: set text(size: 1em)
+// #show raw.where(block: true): block.with(
+//   fill: luma(240),
+//   inset: (x: 1em, y: 1em),
+//   radius: 0.7em,
+//   width: 100%,
+// )
 
 #show bibliography: set text(size: 0.75em)
 #show footnote.entry: set text(size: 0.75em)
 #show quote: set text(size: 1.25em, style: "italic")
+
+#set raw(syntaxes: "Prolog.sublime-syntax")
 
 // #set heading(numbering: numbly("{1}.", default: "1.1"))
 
@@ -155,32 +163,32 @@
 
 == Pulverised Systems
 
-#figure(image("images/pulverization.png"))
+#figure(image("images/pulverization-system.svg"))
 
-== Prolog
+// == Prolog
 
-#components.side-by-side(columns: (2fr, 1fr))[
-  Prolog is a *declarative* programming
-  language based on #underline[first-order logic].
+// #components.side-by-side(columns: (2fr, 1fr))[
+//   Prolog is a *declarative* programming
+//   language based on #underline[first-order logic].
 
-  - Consist of #bold[clauses] (or predicates)
-  - Clauses with empty premises are called #bold[facts]
+//   - Consist of #bold[clauses] (or predicates)
+//   - Clauses with empty premises are called #bold[facts]
 
-  ```prolog
-  nice(X) :- honest(X), gentle(X).
+//   ```prolog
+//   nice(X) :- honest(X), gentle(X).
 
-  honest(alice).
-  honest(barbara).
-  gentle(barbara).
-  ```
+//   honest(alice).
+//   honest(barbara).
+//   gentle(barbara).
+//   ```
 
-  ```prolog
-  ?- nice(X).
-  X = barbara;
-  ```
-][
-  #figure(image("images/file-type-prolog.svg", width: 60%))
-]
+//   ```prolog
+//   ?- nice(X).
+//   X = barbara;
+//   ```
+// ][
+//   #figure(image("images/file-type-prolog.svg", width: 60%))
+// ]
 
 = *DePPS* -- Architecture and Methodology
 
@@ -194,7 +202,11 @@ A *digital device* is identified by a UID `DigDev`,
 the UID of its _knowledge_ component `K` and a list of UIDs of its _sense_ `S`,
 _act_ `A`, _behavior_ `B`, and _communication_ `C` components.
 
-#figure(image("images/digital-device.svg"))
+#only("1")[#figure(image("images/digital-device.svg"))]
+#only("2")[#figure(image("images/digital-device-2.svg"))]
+#only("3")[#figure(image("images/digital-device-3.svg"))]
+// two step animation: latency and hw reqs
+// replace slides 5
 
 #pagebreak()
 
@@ -222,47 +234,79 @@ communication(C, CHWReqs, CMaxLatToK).
 #pagebreak()
 
 ```prolog
-physicalDevice(N, FreeHW, TotHW, Sensors, Actuators).
+place(DigDev, p(DigDev,C,M,E,Placement), I) :-
+    digitalDevice(DigDev, K, Components),
+    placeKnowledge(K, N, KonN, I),
+    placeComponents(Components,N,[KonN],Placement, I),
+    footprint(Placement,E,C,I), maxEnergy(MaxE), maxCarbon(MaxC), 
+    E =< MaxE, C =< MaxC, 
+    involvedNodes(Placement,_,M), maxNodes(MaxM),
+    M =< MaxM.
 ```
+// Show one at time
 
-Each PD has #bold[PUE] (Power Usage Effectiveness) associated, and an #bold[energy source mix].
+#pagebreak()
 
 ```prolog
-energySourceMix(N, [(P1,EnergySource1), ..., (PK,EnergySourceK)]).
-pue(N, PUE).
+placeKnowledge(K,N,on(K,N,HWReqs), I) :-
+    knowledge(K, HWReqs),
+    physicalDevice(N, HWCaps, _, _, _),
+    ( member(used(N,HWUsed), I); \+member(used(N,_), I), HWUsed = 0 ),
+    HWReqs =< HWCaps - HWUsed.
+
+placeComponents([C|Cs],NK,Placement,NewPlacement,I):-
+    member(on(_,N,_), Placement), physicalDevice(N, HWCaps, _, _, _),
+    (behaviour(C, HWReqs, LatToK); communication(C, HWReqs, LatToK)),
+    latencyOK(N,NK,LatToK),
+    hwOK(N,Placement,HWCaps,HWReqs,I),
+    placeComponents(Cs,NK,[on(C,N,HWReqs)|Placement],NewPlacement,I).
+placeComponents([],_,P,P,_).
 ```
+#pagebreak()
 
-Each PD is #bold[connected] to other physical devices though a *link* denoted by its available `Latency` and `Bandwidth`.
 
-```prolog
-link(N1, N2, Latency, Bandwidth).
-```
+// ```prolog
+// physicalDevice(N, FreeHW, TotHW, Sensors, Actuators).
+// ```
 
-== Placement strategy
+// Each PD has #bold[PUE] (Power Usage Effectiveness) associated, and an #bold[energy source mix].
 
-+ Select a node $mono("NK") in mono("Nodes")$ as placement target for $mono("K")$ component
-+ The `placeKnowledge/4` predicate gets the HW requirements of $mono("K")$ and checks the `HWCaps` of $mono("NK")$ can support the new allocation, i.e., $mono("used(NK, HWUsed)" in I)$
-+ The `placeComponents/6` assigns the $mono("A, S, B, C")$ components ensuring they meet the latency constrain towards the _knowledge_
-  + Sensor and Actuators are placed onto nodes $mono("N") in mono("Nodes")$
-  + Predicate `latencyOk` checks that the end-to-end latency between $mono("NK")$ and $mono("N")$ is $< mono("LatToK")$
-  + Predicate `hwOk/5` check the current placement leave enought free HW on $mono("N")$
-  + `placeComponents/6` recursively places the remaining components
-+ A complete eligible placement is found when the list of components to be placed is empty `[]`
+// ```prolog
+// energySourceMix(N, [(P1,EnergySource1), ..., (PK,EnergySourceK)]).
+// pue(N, PUE).
+// ```
 
-== Environment footprint assesment
+// Each PD is #bold[connected] to other physical devices though a *link* denoted by its available `Latency` and `Bandwidth`.
 
-+ `footprint/4` with a `Placement`, estimates `Energy` and `Carbon`.
-  + Extract nodes from `Placement`, remove duplicates with `sort/2`.
-+ Use `hardwareFootprint/5` to process each node:
-  + Call `nodeEnergy/4`:
-    - Get `FreeHW`, `TotHW`, and current allocation.
-    - Compute load and energy before/after placement.
-    - Energy = `(NewE - OldE) * PUE`.
-  + Call `nodeEmissions/3`:
-    - For each energy source: get carbon intensity and proportion.
-    - Compute weighted average, multiply by energy to get emissions.
-+ Accumulate per-node energy and emissions.
-+ Return total `Energy` and `Carbon`.
+// ```prolog
+// link(N1, N2, Latency, Bandwidth).
+// ```
+
+// == Placement strategy
+
+// + Select a node $mono("NK") in mono("Nodes")$ as placement target for $mono("K")$ component
+// + The `placeKnowledge/4` predicate gets the HW requirements of $mono("K")$ and checks the `HWCaps` of $mono("NK")$ can support the new allocation, i.e., $mono("used(NK, HWUsed)" in I)$
+// + The `placeComponents/6` assigns the $mono("A, S, B, C")$ components ensuring they meet the latency constrain towards the _knowledge_
+//   + Sensor and Actuators are placed onto nodes $mono("N") in mono("Nodes")$
+//   + Predicate `latencyOk` checks that the end-to-end latency between $mono("NK")$ and $mono("N")$ is $< mono("LatToK")$
+//   + Predicate `hwOk/5` check the current placement leave enought free HW on $mono("N")$
+//   + `placeComponents/6` recursively places the remaining components
+// + A complete eligible placement is found when the list of components to be placed is empty `[]`
+
+// == Environment footprint assesment
+
+// + `footprint/4` with a `Placement`, estimates `Energy` and `Carbon`.
+//   + Extract nodes from `Placement`, remove duplicates with `sort/2`.
+// + Use `hardwareFootprint/5` to process each node:
+//   + Call `nodeEnergy/4`:
+//     - Get `FreeHW`, `TotHW`, and current allocation.
+//     - Compute load and energy before/after placement.
+//     - Energy = `(NewE - OldE) * PUE`.
+//   + Call `nodeEmissions/3`:
+//     - For each energy source: get carbon intensity and proportion.
+//     - Compute weighted average, multiply by energy to get emissions.
+// + Accumulate per-node energy and emissions.
+// + Return total `Energy` and `Carbon`.
 
 == Placing multiple devices
 
@@ -274,9 +318,9 @@ The considered problem has the following #bold[characteristics]:
 
 We devised a *heuristic-strategy* capable of placing #underline[multiple] devices by exploring candidate nodes from those with #bold[lower carbon intensity] to those with #bold[higher carbon intensity] #footnote("While it practically reduces search times, it remains worst-case exp-time.").
 
-The `place/4` is extended to:
-- sort the nodes by their *carbon intensity* and *energy consumption*
-- impose a *threshold* on the carbon intensisty and energy consumption (single node)
+// The `place/4` is extended to:
+// - sort the nodes by their *carbon intensity* and *energy consumption*
+// - impose a *threshold* on the carbon intensisty and energy consumption (single node)
 
 = Evaluation
 
@@ -288,7 +332,7 @@ The `place/4` is extended to:
   We can (re)generate #bold[deployment plans] featuring:
   - improved *carbon footprint*
   - reduced *energy consumption*
-  - reduced overall *latency*
+  - acceptable *latency*
 
   All the experiments are #underline[released as open-source] on GitHub #fa-github() with a permissive license, and permanently archived on #bold[Zenodo] #cite(label("nicolas_farabegoli_2025_14927541"))
   ][
@@ -298,7 +342,7 @@ The `place/4` is extended to:
 
 == Setup
 
-We model a #underline[syntetic system] acting as a proxy for a *smart city event* or a *swarm* with devices moving around.
+We simulate a *smart city scenario* with a *swarm* of devices moving around.
 
 === Experimental setup
 #components.side-by-side[
@@ -347,7 +391,7 @@ We evaluate two main scenarios:
 
   Scenario invoving the *placer*
 
-  - Use of the _cloud_ for offloading
+  - Use of the _cloud_ and _physical devices_ for offloading
   - Every 30 step, a new *deployment* is computed by the placed
 ]
 
@@ -355,17 +399,17 @@ Each device has an #bold[energy source mix] following a jittered sine wave as a 
 
 == Results -- Energy & Carbon Emissions
 
+#figure(image("images/Carbon_vs_Energy_perNodes_perStrategy.svg"))
+
 Compared to the #bold[baseline] scenario:
 
-- The proposed appraoch achieved *greener* deployments
+- The proposed approach achieved *greener* deployments
   - 3 times *less* energy consumption #fa-check-circle()
   - *Less* carbon emissions #fa-check-circle()
 
 Increasing the number of devices, the #bold[baseline] proportionally increase _energy_ and _carbon_ emission, reaching $12 text("kWh")$ with 100 nodes.
 
 The #bold[placer] consume less than $2 text("kWh")$ with 50 nodes, increasing up to $3.5 text("kWh")$ with 100 nodes.
-
-#figure(image("images/Carbon_vs_Energy_perNodes_perStrategy.svg"))
 
 == Results -- Latency
 
@@ -383,32 +427,33 @@ We considered *two* type of _lantecies_:
 // - #bold[Inter-device latency]: latency experienced by the #math.mono("C") component to communicate with neighboring digital devices
 // - #bold[Intra-component latency]: latency experienced by a single _digital device_ to reach its five components (may offloaded to other physical devices)
 
+#figure(image("images/IntraLatency_vs_InterLatency_perNodes_perStrategy.svg"))
+
 Compared to the #bold[baseline] scenario:
 - The #bold[placer] achieved *good* result in terms of latency:
   - Slight #text(fill: red, weight: "bold")[increase] in the _intra-components_ latency --- but *under control* #fa-tilde(solid: true, size: 1.5em)
   - *Similar* (or even _less_) _intra-device_ latency  #fa-check-circle()
+  - Overall the latency is below $50$ms -- suitable for quasi real-time applications
 // - The inter-device latency is proportional to the distance between devices
 // - With pulverized deployment, *higher* intra-component latency expected
 // - But inter-device latency is expected to be *similar* or even *lower*
 
 The placer achieve *locally-preserving placements* keeping under control _intra-component_ latencies. 
 
-#figure(image("images/IntraLatency_vs_InterLatency_perNodes_perStrategy.svg"))
-
 = Conclusions
 
 == Concluding Remarks
 
-- We proposed *DePPS* a prolog-based planner integrated in Alchemist to evaluate deployment for _pulverized systems_
-- We evaluate _DePPS_ with different simulates scenarios showing its ability to provide *greener* deployments with *low energy* consumption
-- We provide a *reusable toolchain* for reproducing the experiments, and possibily assessing different kind of deployments
+- We proposed *DePPS* a declarative planner integrated in Alchemist to determine deployments for _pulverized systems_
+- We evaluated _DePPS_ with different simulated scenarios showing its ability to provide *greener* deployments with *low energy* consumption
+- We provided a *reusable toolchain* for reproducing the experiments, and possibily assessing different kind of deployments
 
 == Future work
 
-- #bold[Continuous reasoning]: consider only *changes in the network* instead of re-applying the reasoner
-- #bold[Decentralized placement]: current approach assumes a _centralized reasoner_ considering an up-to-date infrastructure view. An inprovement could consider multiple reasoners to focus on a *small part of the system*.
-- #bold[End-to-end simulatio models]: consider (re-)configuration overhead and convergence time
-- #bold[Generalization of rules]: The current placer provides a deployment plan as output. An alternative is to generate local deployment rules, instructing individual devices.
+- #bold[Continuous reasoning]: reason by-diff on *network changes* 
+- #bold[Decentralized placement]: use *multiple reasoners* to compute _local_ deployments
+- #bold[E2E simulation models]: assess (re-)configuration and convergence times
+// - #bold[Generalization of rules]: The current placer provides a deployment plan as output. An alternative is to generate local deployment rules, instructing individual devices.
 
 #focus-slide[*Thank you*]
 

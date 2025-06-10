@@ -1,0 +1,131 @@
+%YAML 1.2
+---
+name: Prolog
+file_extensions:
+  - pl
+  - pro
+  - prolog
+scope: source.prolog
+
+contexts:
+  main:
+    - include: comments
+    - include: strings
+    - include: atoms
+    - include: numbers
+    - include: variables
+    - include: operators
+    - include: built_ins
+    - include: predicates
+    - include: punctuation
+
+  comments:
+    # Line comments
+    - match: '%.*$'
+      scope: comment.line.percent.prolog
+    # Block comments
+    - match: '/\*'
+      scope: punctuation.definition.comment.begin.prolog
+      push:
+        - meta_scope: comment.block.prolog
+        - match: '\*/'
+          scope: punctuation.definition.comment.end.prolog
+          pop: true
+
+  strings:
+    # Double quoted strings
+    - match: '"'
+      scope: punctuation.definition.string.begin.prolog
+      push:
+        - meta_scope: string.quoted.double.prolog
+        - match: '\\.'
+          scope: constant.character.escape.prolog
+        - match: '"'
+          scope: punctuation.definition.string.end.prolog
+          pop: true
+    # Single quoted atoms
+    - match: "'"
+      scope: punctuation.definition.string.begin.prolog
+      push:
+        - meta_scope: string.quoted.single.prolog
+        - match: '\\.'
+          scope: constant.character.escape.prolog
+        - match: "'"
+          scope: punctuation.definition.string.end.prolog
+          pop: true
+
+  atoms:
+    # Quoted atoms are handled in strings section
+    # Unquoted atoms (starting with lowercase)
+    - match: '\b[a-z][a-zA-Z0-9_]*\b'
+      scope: entity.name.function.prolog
+
+  numbers:
+    # Floating point numbers
+    - match: '\b\d+\.\d+([eE][+-]?\d+)?\b'
+      scope: constant.numeric.float.prolog
+    # Integer numbers (including hex, octal, binary)
+    - match: '\b0[xX][0-9a-fA-F]+\b'
+      scope: constant.numeric.hex.prolog
+    - match: '\b0[oO][0-7]+\b'
+      scope: constant.numeric.octal.prolog
+    - match: '\b0[bB][01]+\b'
+      scope: constant.numeric.binary.prolog
+    - match: '\b\d+\b'
+      scope: constant.numeric.integer.prolog
+
+  variables:
+    # Variables (starting with uppercase or underscore)
+    - match: '\b[A-Z_][a-zA-Z0-9_]*\b'
+      scope: variable.other.prolog
+    # Anonymous variable
+    - match: '\b_\b'
+      scope: variable.language.anonymous.prolog
+
+  operators:
+    # Arithmetic operators
+    - match: '\+|\-|\*|/|//|mod|rem|\*\*'
+      scope: keyword.operator.arithmetic.prolog
+    # Comparison operators
+    - match: '=:=|=\\=|<|>|=<|>=|@<|@>|@=<|@>='
+      scope: keyword.operator.comparison.prolog
+    # Unification operators
+    - match: '=|\\=|==|\\=='
+      scope: keyword.operator.unification.prolog
+    # Logic operators
+    - match: '\\+|;|->|\||,'
+      scope: keyword.operator.logical.prolog
+    # Cut operator
+    - match: '!'
+      scope: keyword.operator.cut.prolog
+    # Type test operators
+    - match: 'is\b'
+      scope: keyword.operator.is.prolog
+
+  built_ins:
+    # Built-in predicates
+    - match: '\b(true|fail|halt|abort|write|writeln|read|nl|tab|get|put|see|tell|seen|told|append|member|length|findall|bagof|setof|assert|asserta|assertz|retract|retractall|clause|call|once|ignore|catch|throw|functor|arg|univ|copy_term|var|nonvar|atom|number|integer|float|compound|callable|ground|acyclic_term|subsumes_term|compare|sort|keysort|succ|plus|between|gcd|abs|sign|float_integer_part|float_fractional_part|floor|ceiling|round|truncate|max|min|random|current_op|op|current_predicate|predicate_property|current_atom|atom_length|atom_codes|atom_chars|number_codes|number_chars|char_code|open|close|current_input|current_output|set_input|set_output|stream_property|at_end_of_stream|flush_output|statistics|garbage_collect)\b'
+      scope: support.function.builtin.prolog
+
+  predicates:
+    # Predicate definitions (functor followed by parenthesis)
+    - match: '\b([a-z][a-zA-Z0-9_]*)\s*(?=\()'
+      captures:
+        1: entity.name.function.predicate.prolog
+
+  punctuation:
+    # Parentheses, brackets, braces
+    - match: '[\(\)\[\]\{\}]'
+      scope: punctuation.section.brackets.prolog
+    # Clause separator
+    - match: '\.'
+      scope: punctuation.terminator.clause.prolog
+    # Rule operator
+    - match: ':-'
+      scope: keyword.operator.rule.prolog
+    # Pipe operator (for lists)
+    - match: '\|'
+      scope: punctuation.separator.pipe.prolog
+    # Comma separator
+    - match: ','
+      scope: punctuation.separator.comma.prolog
