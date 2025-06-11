@@ -7,6 +7,7 @@
 #import "@preview/cetz:0.3.4"
 #import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
 #import "@preview/codly:1.3.0": *
+#import "@preview/tiaoma:0.3.0"
 #import "@preview/codly-languages:0.1.1": *
 #show: codly-init.with(
 
@@ -104,7 +105,7 @@
 
 === Research Gap
 
-- Previos works just #bold[compared] alternative deployments
+- Previous works just #bold[compared] alternative deployments
 - _MILP_ and _SAT_ may have issues with #bold[expressiveness], #bold[scalability], #bold[implementation], and #bold[operational aspects].
 
 #only("2")[
@@ -205,8 +206,6 @@ _act_ `A`, _behavior_ `B`, and _communication_ `C` components.
 #only("1")[#figure(image("images/digital-device.svg"))]
 #only("2")[#figure(image("images/digital-device-2.svg"))]
 #only("3")[#figure(image("images/digital-device-3.svg"))]
-// two step animation: latency and hw reqs
-// replace slides 5
 
 #pagebreak()
 
@@ -336,7 +335,14 @@ We devised a *heuristic-strategy* capable of placing #underline[multiple] device
 
   All the experiments are #underline[released as open-source] on GitHub #fa-github() with a permissive license, and permanently archived on #bold[Zenodo] #cite(label("nicolas_farabegoli_2025_14927541"))
   ][
-    #figure((image("images/github-experiments-qr.svg", width: 70%)))
+    #tiaoma.qrcode(
+      "https://github.com/nicolasfara/experiments-2025-pulverization-prolog-placer",
+      options: (
+        scale: 4.0,
+        fg-color: rgb("#23373b"),
+      )
+    )
+    //#figure((image("images/github-experiments-qr.svg", width: 70%)))
   ]
 ]
 
